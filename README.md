@@ -69,7 +69,7 @@ $ log2curl -o ~/test.txt cloud-watch -q "4ffc3f36-2979-4558-88e8-dbe256d05d20"
 ```
 
 ### Generate config
-Set patterns each time is annoying. We generate a config file, and save our settings to config.
+Set patterns each time is annoying. We can generate a config file, and save our settings to config.
 
 ```bash
 $ log2curl generate --config
