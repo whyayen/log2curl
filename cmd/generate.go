@@ -40,7 +40,13 @@ var generateCmd = &cobra.Command{
 			viper.SetDefault("key.headers_prefix", "headers")
 			viper.SetDefault("key.parameters_prefix", "parameters")
 			viper.SetDefault("whitelist_headers", []string{"Content-Type", "Authorization"})
-			viper.SafeWriteConfig()
+			err = viper.SafeWriteConfig()
+
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+
 			fmt.Println("Generate default config to $HOME/.log2curl.json successfully")
 		}
 	},
