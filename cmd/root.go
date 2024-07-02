@@ -17,7 +17,6 @@ type arrayFlags []string
 var (
 	// Used for flags.
 	cfgFile string
-	myFlags arrayFlags
 )
 
 // rootCmd represents the base command when called without any subcommands
