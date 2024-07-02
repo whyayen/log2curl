@@ -15,10 +15,10 @@ aws logs start-query --log-group-names "/aws/apigateway/welcome" "/aws/lambda/Te
 ## Installation
 
 ```bash
-wget https://github.com/whyayen/log2curl/raw/main/log2curl
+curl -o log2curl -L https://github.com/whyayen/log2curl/raw/main/bin/log2curl-arm64-darwin
 
 # change permission
-chmod u+x ./log2curl
+chmod +x ./log2curl
 ```
 
 
@@ -46,7 +46,7 @@ And we have a query-id from executing `aws logs start-query`:
 
 We can run log2curl to transform logs to cURL commands now:
 ```bash
-$ log2curl --scheme "headers.scheme" --method "method" --host "host" --path "path" --headers-prefix "headers" --parameters-prefix "parameters" cloud-watch -q "4ffc3f36-2979-4558-88e8-dbe256d05d20"
+log2curl --scheme "headers.scheme" --method "method" --host "host" --path "path" --headers-prefix "headers" --parameters-prefix "parameters" cloud-watch -q "4ffc3f36-2979-4558-88e8-dbe256d05d20"
 ```
 
 Example response:
@@ -67,14 +67,14 @@ log2curl.1669150193.txt
 You can change the output by yourself:
 
 ```bash
-$ log2curl -o ~/test.txt cloud-watch -q "4ffc3f36-2979-4558-88e8-dbe256d05d20"
+log2curl -o ~/test.txt cloud-watch -q "4ffc3f36-2979-4558-88e8-dbe256d05d20"
 ```
 
 ### Generate config
 Set patterns each time is annoying. We can generate a config file, and save our settings to config.
 
 ```bash
-$ log2curl generate --config
+log2curl generate --config
 ```
 
 Generate successfully
@@ -83,8 +83,10 @@ Generate default config to $HOME/.log2curl.json successfully
 ```
 
 ```bash
-$ cat ~/.log2curl.json
+cat ~/.log2curl.json
+```
 
+```json
 {
   "custom": {
     "host": ""
@@ -102,11 +104,13 @@ $ cat ~/.log2curl.json
     "Authorization"
   ]
 }
-
-# Just modify configuration if you would like to customize it.
-$ vim ~/.log2curl.json
 ```
 
+# Just modify configuration if you would like to customize it.
+
+```bash
+vim ~/.log2curl.json
+```
 ### Whitelist Headers
 We could decide which fields could be used in cURL if we have multiple headers field in the log.
 
