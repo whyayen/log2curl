@@ -38,8 +38,5 @@ func TestParse(t *testing.T) {
 	assert.Equal(t, result.GetHeaders(), map[string]string{
 		"Authorization": "Bearer token",
 	})
-	assert.Equal(t, result.GetParameters(), map[string]string{
-		"id":         "66838a1d337a8cdc830b439c",
-		"subscribed": "true",
-	})
+	assert.Equal(t, result.GetParameters(), "{\"id\":\"66838a1d337a8cdc830b439c\",\"subscribed\":\"true\"}")
 }

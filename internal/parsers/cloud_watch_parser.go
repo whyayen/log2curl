@@ -1,6 +1,7 @@
 package parsers
 
 import (
+	"github.com/tidwall/sjson"
 	"github.com/whyayen/log2curl/internal/models"
 	"slices"
 	"strings"
@@ -18,6 +19,7 @@ func NewCloudWatchParser(config *models.RestfulConfiguration) *CloudWatchParser 
 
 func (p *CloudWatchParser) Parse(log *map[string]string) *models.HttpRequest {
 	restful := models.NewHttpRequest()
+	parameters := ""
 
 	for key, value := range *log {
 		switch {
@@ -39,9 +41,17 @@ func (p *CloudWatchParser) Parse(log *map[string]string) *models.HttpRequest {
 				restful.Headers[header] = value
 			}
 		case strings.HasPrefix(key, p.Config.ParameterPrefix+"."):
-			restful.Parameters[strings.TrimPrefix(key, p.Config.ParameterPrefix+".")] = value
+			newKey := strings.TrimPrefix(key, p.Config.ParameterPrefix+".")
+			pJson, err := sjson.Set(parameters, newKey, value)
+
+			if err != nil {
+				restful.InvalidRequest = true
+				return restful
+			}
+			parameters = pJson
 		}
 	}
+	restful.Parameters = parameters
 
 	return restful
 }
