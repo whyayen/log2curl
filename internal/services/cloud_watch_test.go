@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/magiconair/properties/assert"
+	"github.com/whyayen/log2curl/internal/models"
 	"testing"
 )
 
@@ -38,8 +39,15 @@ func (m *mockCloudWatchLogsClient) GetQueryResults(ctx context.Context, params *
 func (m *mockCloudWatchLogsClient) GetLogRecord(ctx context.Context, params *cloudwatchlogs.GetLogRecordInput, optFns ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogRecordOutput, error) {
 	return &cloudwatchlogs.GetLogRecordOutput{
 		LogRecord: map[string]string{
-			"key":  "value",
-			"key2": "value2",
+			"host":                 "example.com",
+			"header.Authorization": "Bearer token",
+			"header.Content-Type":  "application/json",
+			"header.User-Agent":    "Webkit 1.0",
+			"parameter.id":         "66838a1d337a8cdc830b439c",
+			"parameter.subscribed": "true",
+			"path":                 "/users",
+			"method":               "GET",
+			"scheme":               "https",
 		},
 	}, nil
 }
@@ -61,10 +69,22 @@ func TestGetQueryResults(t *testing.T) {
 		},
 		client: &mockCloudWatchLogsClient{},
 	}
+	svc.RestfulConfiguration = &models.RestfulConfiguration{
+		Host:             "host",
+		Path:             "path",
+		Method:           "method",
+		Scheme:           "scheme",
+		HeaderPrefix:     "header",
+		ParameterPrefix:  "parameter",
+		WhitelistHeaders: []string{"Authorization"},
+		CustomHost:       "custom.example2.com",
+	}
 
 	results, err := svc.GetQueryResults(ctx)
 	assert.Equal(t, err, nil)
 	assert.Equal(t, len(results.Results), 1)
+	assert.Equal(t, results.Results[0].GetHost(), "custom.example2.com")
+	assert.Equal(t, results.Results[0].GetPath(), "/users")
 }
 
 func TestGetQueryResultsWithError(t *testing.T) {

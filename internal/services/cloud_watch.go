@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/whyayen/log2curl/internal/models"
+	"github.com/whyayen/log2curl/internal/parsers"
 	"sync"
 )
 
@@ -14,11 +16,12 @@ type CloudWatchQueryParams struct {
 
 type CloudWatchService struct {
 	CloudWatchQueryParams
+	*models.RestfulConfiguration
 	client CloudWatchClient
 }
 
 type CloudWatchResults struct {
-	Results []*cloudwatchlogs.GetLogRecordOutput
+	Results []*models.Restful
 }
 
 type CloudWatchClient interface {
@@ -61,8 +64,9 @@ func (c *CloudWatchService) GetQueryResults(ctx context.Context) (CloudWatchResu
 	}
 
 	var wg sync.WaitGroup
-	resultsChan := make(chan *cloudwatchlogs.GetLogRecordOutput, len(ptrSlice))
+	resultsChan := make(chan *models.Restful, len(ptrSlice))
 	errChan := make(chan error, len(ptrSlice))
+	parser := parsers.NewGeneralParser(c.RestfulConfiguration)
 	wg.Add(len(ptrSlice))
 
 	for _, ptr := range ptrSlice {
@@ -77,7 +81,7 @@ func (c *CloudWatchService) GetQueryResults(ctx context.Context) (CloudWatchResu
 				return
 			}
 
-			resultsChan <- resp
+			resultsChan <- parser.Parse(&resp.LogRecord)
 		}(ptr)
 	}
 
@@ -90,7 +94,7 @@ func (c *CloudWatchService) GetQueryResults(ctx context.Context) (CloudWatchResu
 	}
 
 	results := CloudWatchResults{
-		Results: []*cloudwatchlogs.GetLogRecordOutput{},
+		Results: []*models.Restful{},
 	}
 	for result := range resultsChan {
 		results.Results = append(results.Results, result)
