@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetHost(t *testing.T) {
-	restful := NewRestful(&RestfulConfiguration{
+	restful := NewHttpRequest(&RestfulConfiguration{
 		CustomHost: "custom.example2.com",
 	})
 	restful.Host = "example.com"

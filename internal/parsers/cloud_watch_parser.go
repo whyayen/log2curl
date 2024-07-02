@@ -10,14 +10,14 @@ type CloudWatchParser struct {
 	Config *models.RestfulConfiguration
 }
 
-func NewGeneralParser(config *models.RestfulConfiguration) *CloudWatchParser {
+func NewCloudWatchParser(config *models.RestfulConfiguration) *CloudWatchParser {
 	return &CloudWatchParser{
 		Config: config,
 	}
 }
 
-func (p *CloudWatchParser) Parse(log *map[string]string) *models.Restful {
-	restful := models.NewRestful(p.Config)
+func (p *CloudWatchParser) Parse(log *map[string]string) *models.HttpRequest {
+	restful := models.NewHttpRequest(p.Config)
 
 	for key, value := range *log {
 		switch {

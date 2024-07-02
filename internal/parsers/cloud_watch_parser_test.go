@@ -17,7 +17,7 @@ func TestParse(t *testing.T) {
 		WhitelistHeaders: []string{"Authorization"},
 		CustomHost:       "custom.example2.com",
 	}
-	parser := NewGeneralParser(cfg)
+	parser := NewCloudWatchParser(cfg)
 	log := map[string]string{
 		"host":                 "example.com",
 		"header.Authorization": "Bearer token",

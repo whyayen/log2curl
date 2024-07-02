@@ -21,7 +21,7 @@ type CloudWatchService struct {
 }
 
 type CloudWatchResults struct {
-	Results []*models.Restful
+	Results []*models.HttpRequest
 }
 
 type CloudWatchClient interface {
@@ -64,9 +64,9 @@ func (c *CloudWatchService) GetQueryResults(ctx context.Context) (CloudWatchResu
 	}
 
 	var wg sync.WaitGroup
-	resultsChan := make(chan *models.Restful, len(ptrSlice))
+	resultsChan := make(chan *models.HttpRequest, len(ptrSlice))
 	errChan := make(chan error, len(ptrSlice))
-	parser := parsers.NewGeneralParser(c.RestfulConfiguration)
+	parser := parsers.NewCloudWatchParser(c.RestfulConfiguration)
 	wg.Add(len(ptrSlice))
 
 	for _, ptr := range ptrSlice {
@@ -94,7 +94,7 @@ func (c *CloudWatchService) GetQueryResults(ctx context.Context) (CloudWatchResu
 	}
 
 	results := CloudWatchResults{
-		Results: []*models.Restful{},
+		Results: []*models.HttpRequest{},
 	}
 	for result := range resultsChan {
 		results.Results = append(results.Results, result)

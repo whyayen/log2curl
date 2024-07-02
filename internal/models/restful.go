@@ -1,6 +1,6 @@
 package models
 
-type Restful struct {
+type HttpRequest struct {
 	Host                 string
 	Path                 string
 	Method               string
@@ -10,15 +10,15 @@ type Restful struct {
 	RestfulConfiguration *RestfulConfiguration
 }
 
-func NewRestful(cfg *RestfulConfiguration) *Restful {
-	return &Restful{
+func NewHttpRequest(cfg *RestfulConfiguration) *HttpRequest {
+	return &HttpRequest{
 		Headers:              make(map[string]string),
 		Parameters:           make(map[string]string),
 		RestfulConfiguration: cfg,
 	}
 }
 
-func (r *Restful) GetHost() string {
+func (r *HttpRequest) GetHost() string {
 	if r.RestfulConfiguration != nil && r.RestfulConfiguration.CustomHost != "" {
 		return r.RestfulConfiguration.CustomHost
 	}
@@ -26,22 +26,22 @@ func (r *Restful) GetHost() string {
 	return r.Host
 }
 
-func (r *Restful) GetPath() string {
+func (r *HttpRequest) GetPath() string {
 	return r.Path
 }
 
-func (r *Restful) GetMethod() string {
+func (r *HttpRequest) GetMethod() string {
 	return r.Method
 }
 
-func (r *Restful) GetScheme() string {
+func (r *HttpRequest) GetScheme() string {
 	return r.Scheme
 }
 
-func (r *Restful) GetHeaders() map[string]string {
+func (r *HttpRequest) GetHeaders() map[string]string {
 	return r.Headers
 }
 
-func (r *Restful) GetParameters() map[string]string {
+func (r *HttpRequest) GetParameters() map[string]string {
 	return r.Parameters
 }
