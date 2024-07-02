@@ -62,7 +62,7 @@ func TestGetQueryResults(t *testing.T) {
 		client: &mockCloudWatchLogsClient{},
 	}
 
-	results, err := svc.getQueryResults(ctx)
+	results, err := svc.GetQueryResults(ctx)
 	assert.Equal(t, err, nil)
 	assert.Equal(t, len(results.Results), 1)
 }
@@ -77,7 +77,7 @@ func TestGetQueryResultsWithError(t *testing.T) {
 		client: &mockCloudWatchReturnErrClient{},
 	}
 
-	results, err := svc.getQueryResults(ctx)
+	results, err := svc.GetQueryResults(ctx)
 
 	assert.Equal(t, err == nil, false)
 	assert.Equal(t, len(results.Results), 0)

@@ -42,7 +42,7 @@ func NewCloudWatchService(ctx context.Context, queryId *string) (*CloudWatchServ
 	}, nil
 }
 
-func (c *CloudWatchService) getQueryResults(ctx context.Context) (CloudWatchResults, error) {
+func (c *CloudWatchService) GetQueryResults(ctx context.Context) (CloudWatchResults, error) {
 	output, err := c.client.GetQueryResults(ctx, &cloudwatchlogs.GetQueryResultsInput{
 		QueryId: c.queryId,
 	})
