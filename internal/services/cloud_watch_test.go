@@ -21,7 +21,7 @@ func (m *mockCloudWatchLogsClient) GetQueryResults(ctx context.Context, params *
 			Value: func(s string) *string { return &s }("value"),
 		},
 		types.ResultField{
-			Field: func(s string) *string { return &s }("field2"),
+			Field: func(s string) *string { return &s }("@ptr"),
 			Value: func(s string) *string { return &s }("value2"),
 		},
 		types.ResultField{
@@ -69,7 +69,7 @@ func TestGetQueryResults(t *testing.T) {
 		},
 		client: &mockCloudWatchLogsClient{},
 	}
-	svc.RestfulConfiguration = &models.RestfulConfiguration{
+	svc.HttpRequestConfiguration = &models.HttpRequestConfiguration{
 		Host:             "host",
 		Path:             "path",
 		Method:           "method",

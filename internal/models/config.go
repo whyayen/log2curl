@@ -1,6 +1,6 @@
 package models
 
-type RestfulConfiguration struct {
+type HttpRequestConfiguration struct {
 	ParameterPrefix  string
 	HeaderPrefix     string
 	Path             string

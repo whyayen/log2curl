@@ -8,10 +8,10 @@ import (
 )
 
 type CloudWatchParser struct {
-	Config *models.RestfulConfiguration
+	Config *models.HttpRequestConfiguration
 }
 
-func NewCloudWatchParser(config *models.RestfulConfiguration) *CloudWatchParser {
+func NewCloudWatchParser(config *models.HttpRequestConfiguration) *CloudWatchParser {
 	return &CloudWatchParser{
 		Config: config,
 	}

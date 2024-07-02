@@ -16,7 +16,7 @@ type CloudWatchQueryParams struct {
 
 type CloudWatchService struct {
 	CloudWatchQueryParams
-	*models.RestfulConfiguration
+	*models.HttpRequestConfiguration
 	client CloudWatchClient
 }
 
@@ -60,13 +60,17 @@ func (c *CloudWatchService) GetQueryResults(ctx context.Context) (CloudWatchResu
 
 	var ptrSlice []*string
 	for _, result := range output.Results {
-		ptrSlice = append(ptrSlice, result[2].Value)
+		for index, field := range result {
+			if *field.Field == "@ptr" {
+				ptrSlice = append(ptrSlice, result[index].Value)
+			}
+		}
 	}
 
 	var wg sync.WaitGroup
 	resultsChan := make(chan *models.HttpRequest, len(ptrSlice))
 	errChan := make(chan error, len(ptrSlice))
-	parser := parsers.NewCloudWatchParser(c.RestfulConfiguration)
+	parser := parsers.NewCloudWatchParser(c.HttpRequestConfiguration)
 	wg.Add(len(ptrSlice))
 
 	for _, ptr := range ptrSlice {

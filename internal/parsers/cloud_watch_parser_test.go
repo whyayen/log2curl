@@ -7,7 +7,7 @@ import (
 )
 
 func TestParse(t *testing.T) {
-	cfg := &models.RestfulConfiguration{
+	cfg := &models.HttpRequestConfiguration{
 		Host:             "host",
 		Path:             "path",
 		Method:           "method",
