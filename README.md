@@ -1,6 +1,5 @@
 # log2curl
-
-log2curl is a tool that transforms logs on AWS Cloud Watch to cURL command easily with query-id(AWS given).
+log2curl is a tool that transforms logs on AWS Cloud Watch to cURL command easily with query ID(AWS given).
 Something needs to be done before running this script:
 1. Retrieve query-id with [start-query](https://docs.aws.amazon.com/cli/latest/reference/logs/start-query.html) via AWS CLI or API
 2. Define the patterns to render cURL command
@@ -52,8 +51,11 @@ $ log2curl --scheme "headers.scheme" --method "method" --host "host" --path "pat
 
 Example response:
 ```
+Loading default config...
 Start to get query results...
-Finished. Save file in: log2curl.1669150193.txt
+Get query results successfully!
+Start to generate CURL command...
+Finished. Save file in: log2curl.1719928478.txt
 ```
 
 log2curl will generate a txt file in your current directory:
@@ -129,7 +131,6 @@ But our cURL request just need Authorization & Content-Type, we can set whitelis
 
 ```json
 {
-  ...,
   "whitelist_headers": [
     "Authorization",
     "Content-Type"
@@ -151,7 +152,6 @@ Sometimes we want to reproduce a **Production** log on **Staging**, we can repla
     "custom": {
         "host": "staging.example.com"
     },
-    ...,
 }
 ```
 
@@ -162,20 +162,20 @@ log2curl --custom-host "staging.example.com" cloud-watch -q "4ffc3f36-2979-4558-
 ```
 
 ### Failed
-Sometimes, log2curl can't parse field or transform to cURL. The result will be printed `Failed` in the file.
+Sometimes, log2curl can't parse field or transform to cURL. The result will be printed `invalid request` in the file.
 
 ```
 curl -X GET https://example.com/v1/users/page=1&per_page=50 \ 
  -H 'Authorization: Bearer JzCfIfzMGo'
 
-Failed
+invalid request
 
-Failed
+invalid request
 
 curl -X GET https://example.com/v1/items \ 
  -H 'Authorization: Bearer Czx2341xa'
 ```
 
 ## Known Issues
-- Just support AWS default profile now (It is unaviable to choose specific profile to connect AWS).
+- Just support AWS default profile now (It is unable to choose specific profile to connect AWS).
 - All fields become string after transforming to cURL.
