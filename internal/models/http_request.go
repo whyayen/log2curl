@@ -1,28 +1,22 @@
 package models
 
 type HttpRequest struct {
-	Host                 string
-	Path                 string
-	Method               string
-	Scheme               string
-	Headers              map[string]string
-	Parameters           map[string]string
-	RestfulConfiguration *RestfulConfiguration
+	Host       string
+	Path       string
+	Method     string
+	Scheme     string
+	Headers    map[string]string
+	Parameters map[string]string
 }
 
-func NewHttpRequest(cfg *RestfulConfiguration) *HttpRequest {
+func NewHttpRequest() *HttpRequest {
 	return &HttpRequest{
-		Headers:              make(map[string]string),
-		Parameters:           make(map[string]string),
-		RestfulConfiguration: cfg,
+		Headers:    make(map[string]string),
+		Parameters: make(map[string]string),
 	}
 }
 
 func (r *HttpRequest) GetHost() string {
-	if r.RestfulConfiguration != nil && r.RestfulConfiguration.CustomHost != "" {
-		return r.RestfulConfiguration.CustomHost
-	}
-
 	return r.Host
 }
 

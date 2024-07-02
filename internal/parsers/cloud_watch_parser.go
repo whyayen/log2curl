@@ -17,12 +17,16 @@ func NewCloudWatchParser(config *models.RestfulConfiguration) *CloudWatchParser 
 }
 
 func (p *CloudWatchParser) Parse(log *map[string]string) *models.HttpRequest {
-	restful := models.NewHttpRequest(p.Config)
+	restful := models.NewHttpRequest()
 
 	for key, value := range *log {
 		switch {
 		case key == p.Config.Host:
-			restful.Host = value
+			if p.Config.CustomHost != "" {
+				restful.Host = p.Config.CustomHost
+			} else {
+				restful.Host = value
+			}
 		case key == p.Config.Path:
 			restful.Path = value
 		case key == p.Config.Method:
