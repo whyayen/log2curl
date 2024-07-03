@@ -14,10 +14,13 @@ import (
 )
 
 var queryId string
+var profile string
 
 func init() {
 	cloudWatchCmd.Flags().StringVarP(&queryId, "query-id", "q", "", "Cloud Watch query ID (required)")
 	cloudWatchCmd.MarkFlagRequired("query-id")
+	cloudWatchCmd.Flags().StringVarP(&profile, "profile", "p", "", "AWS profile (optional)")
+	viper.BindPFlag("aws.profile", cloudWatchCmd.Flags().Lookup("profile"))
 
 	rootCmd.AddCommand(cloudWatchCmd)
 }

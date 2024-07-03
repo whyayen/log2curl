@@ -180,6 +180,32 @@ curl -X GET https://example.com/v1/items \
  -H 'Authorization: Bearer Czx2341xa'
 ```
 
+## AWS Credentials
+log2curl will use the default AWS credentials in your environment. If you want to use a specific profile, you can set the `--profile` option.
+```bash
+log2curl cloud-watch --profile "Tom" -q "4ffc3f36-2979-4558-88e8-dbe256d05d20"
+```
+
+Or you can set the environment variable `AWS_PROFILE` to specify the profile.
+That's supported by AWS SDK by default.
+```bash
+export AWS_PROFILE=Tom
+```
+
+### Specify Region
+log2curl doesn't support that region option with CLI. If you want to use a specific region, you can set the `AWS_REGION` environment variable.
+That's supported by AWS SDK by default.
+```bash
+export AWS_REGION=us-west-2
+```
+
+### Specifying Credentials
+If you want to specify the credentials, you can set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables.
+That's supported by AWS SDK by default.
+```bash
+export AWS_ACCESS_KEY_ID=YOUR_AKID
+export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
+```
+
 ## Known Issues
-- Just support AWS default profile now (It is unable to choose specific profile to connect AWS).
 - All fields become string after transforming to cURL.

@@ -3,8 +3,10 @@ package services
 import (
 	"context"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/spf13/viper"
 	"github.com/whyayen/log2curl/internal/models"
 	"github.com/whyayen/log2curl/internal/parsers"
 	"sync"
@@ -30,7 +32,16 @@ type CloudWatchClient interface {
 }
 
 func NewCloudWatchService(ctx context.Context, queryId *string) (*CloudWatchService, error) {
-	cfg, err := config.LoadDefaultConfig(ctx)
+	awsProfile := viper.GetString("aws.profile")
+	var cfg aws.Config
+	var err error
+
+	if awsProfile != "" {
+		cfg, err = config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(awsProfile))
+	} else {
+		cfg, err = config.LoadDefaultConfig(ctx)
+	}
+
 	if err != nil {
 		return &CloudWatchService{}, fmt.Errorf("error loading default config: %w", err)
 	}
