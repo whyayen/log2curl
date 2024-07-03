@@ -106,7 +106,7 @@ cat ~/.log2curl.json
 }
 ```
 
-# Just modify configuration if you would like to customize it.
+## Customize configuration
 
 ```bash
 vim ~/.log2curl.json
